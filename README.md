@@ -68,3 +68,10 @@ Then our team made a dashboard and presented it to stake holders
 
 ![Charts](https://github.com/SpotMcCormick/apptrader/assets/132832823/db4e6252-5e84-4cda-b525-a87c3c07e806)
 
+LINK HERE
+https://public.tableau.com/app/profile/jeremy.mccormick/viz/Pesentation_16876278636820/Charts
+
+##The Grand Total
+
+<img width="339" alt="Image20230624120619" src="https://github.com/SpotMcCormick/apptrader/assets/132832823/5481e394-e4ac-43bd-a40e-feeb1ec89d65">
+
