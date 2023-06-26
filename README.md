@@ -1,25 +1,7 @@
-### App Trader
+##PROJECT
+Here is a project that team members and I did in class for a company called AppTrader. Based on on our research we concluded that entertainment apps were highly profitable and want to strike at the opprotunity. We picked apps that ranker higher than the average rating between 2 app stores and averaged and rounded their ranking between the store. Down below are the assumptions of Apptraders business format.
 
-Your team has been hired by a new company called App Trader to help them explore and gain insights from apps that are made available through the Apple App Store and Android Play Store. App Trader is a broker that purchases the rights to apps from developers in order to market the apps and offer in-app purchase. 
-
-Unfortunately, the data for Apple App Store apps and Android Play Store Apps is located in separate tables with no referential integrity.
-
-#### 1. Loading the data
-a. Launch PgAdmin and create a new database called app_trader.  
-
-b. Right-click on the app_trader database and choose `Restore...`  
-
-c. Use the default values under the `Restore Options` tab. 
-
-d. In the `Filename` section, browse to the backup file `app_store_backup.backup` in the data folder of this repository.  
-
-e. Click `Restore` to load the database.  
-
-f. Verify that you have two tables:  
-    - `app_store_apps` with 7197 rows  
-    - `play_store_apps` with 10840 rows
-
-#### 2. Assumptions
+##Assumptions
 
 Based on research completed prior to launching App Trader as a company, you can assume the following:
 
@@ -48,13 +30,38 @@ d. For every half point that an app gains in rating, its projected lifespan incr
 e. App Trader would prefer to work with apps that are available in both the App Store and the Play Store since they can market both for the same $1000 per month.
 
 
-#### 3. Deliverables
-
-a. Develop some general recommendations as to the price range, genre, content rating, or anything else for apps that the company should target.
-
-b. Develop a Top 10 List of the apps that App Trader should buy.
-
-c. Submit a report based on your findings. All analysis work must be done using PostgreSQL, however you may export query results to create charts in Excel for your report. 
+##Our Code
+Our code consisted of finding entertainment apps that ranked higher than the averating rating. He also averaged and rounded all the app rankings between the 2 stores. The code looked like this. 
 
 
-hello
+        SELECT 
+        DISTINCT name, 
+        CASE 
+        	WHEN ((a.rating + g.rating) / 2) % 1 >= 0.25 AND ((a.rating + g.rating) / 2) % 1 <= 0.75 THEN FLOOR((a.rating + g.rating) / 2) + 0.5 
+        	WHEN ((a.rating + g.rating) / 2) % 1 > 0.75 THEN CEILING((a.rating + g.rating) / 2)
+        	ELSE FLOOR((a.rating + g.rating) / 2)
+        	END AS combined_average_rounded,
+        (5+5) AS life_span, 
+        (4.5*2*12*10000)::MONEY AS profit_over_time,  
+        CASE WHEN g.price = '0' THEN '$10,000' ELSE CAST(TRIM(REPLACE(g.price, '$', '')) AS numeric)*10000::MONEY END AS purchase_price , g.price::money AS total_price,
+        ROUND(g.rating*2*12*1000,1)::MONEY AS marketing_cost_over_time
+        FROM app_store_apps AS a
+        JOIN play_store_apps AS g
+        USING(name)
+        WHERE a.rating >
+        	( SELECT AVG(rating)
+        	 FROM app_store_apps
+        	 JOIN play_store_apps
+        	 USING (rating))
+        AND g.rating> 
+        ( SELECT AVG(rating)
+        	 FROM app_store_apps
+        	 JOIN play_store_apps
+         	USING(rating))
+        AND a.primary_genre LIKE '%Ent%'
+        OR g.genres LIKE '%Ent%'
+        ORDER BY combined_average_rounded DESC
+LIMIT 10
+
+
+
