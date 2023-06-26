@@ -63,5 +63,8 @@ Our code consisted of finding entertainment apps that ranked higher than the ave
         ORDER BY combined_average_rounded DESC
 LIMIT 10
 
+#Dashboard
+Then our team made a dashboard and presented it to stake holders
 
+![Charts](https://github.com/SpotMcCormick/apptrader/assets/132832823/db4e6252-5e84-4cda-b525-a87c3c07e806)
 
